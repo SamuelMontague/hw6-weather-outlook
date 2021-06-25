@@ -1,18 +1,12 @@
 var searchEl = $('#citySearch');
 var searchListEl = $('#cityList');
-var currentCity;
-var currentTemp;
-var currentHum;
-var currentSpeed;
-var currentUVind;
-
-
-
+var searchButton = $('#searchButton');
+var currentCity = $('#currentCity');
+var currentTemp = $('#temp');
+var currentHum = $('#hum')
+var currentSpeed= $('#windSpeed')
+var currentUVind = $('#uvIndex')
 var savedCity = [];
-
-
-
-
 
 function find(city){
     for (var i=0; i<savedCity.length; i++){
@@ -23,16 +17,22 @@ function find(city){
     return 1;
 }
 
-
 var apiKey = "8c6c02d9b70f813c9a3adfe51cbbc402"
+
+function displayWeather(e){
+    e.preventDefault();
+    if(searchEl.val().trim()!==""){
+        city=searchEl.val().trim();
+        showWeather(city);
+    }
+}
 
 function showWeather(city){
     var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + apiKey;
     $.ajax({
         url:url,
         method: "Get"
-    })
-    .then(function(response){
+    }).then( function(response){
         console.log(response);
 
         var weatherIcon= response.weather[0].icon;
@@ -43,7 +43,7 @@ function showWeather(city){
         $(currentCity).html(response.name +"("+date+"?)" + "<img src="+iconurl+">");
     
         var tempF = (response.main.temp - 273.15) * 1.80 + 32;
-        $(currentTemp).html(tempF).toFixed(2)+"&#8457")
+        $(currentTemp).html((tempF).toFixed(2)+"&#8457")
 
         $(currentHum).html(response.main.humidity+"%");
 
@@ -69,10 +69,9 @@ function showWeather(city){
                     addToList(city);
                 }
             }
-    
-    });
-} 
-
+        }        
+    )
+}    
 function uvindex(ln, lt){
     var url = "https://api.openweeathermap.org/data/2.5/uvi?appid=" + apiKey+ "&lat="+lt+ "&lon=" +ln;
     $.ajax({
@@ -111,6 +110,39 @@ function forecast(cityid){
 
     })
 }
+
+function addToList(c){
+    var listEl= $("<li>"+ c.toUpperCase()+ "</li>");
+    $(listEl).attr("class", "list-group-item")
+    $(listEl).attr("data-value", c.toUpperCase());
+    $(".list-group").append(listEl)
+}
+
+
+function activatePastSearch (e) {
+    var liEl=e.target;
+    if (e.target.matches("li")){
+        city=liEl.textContent.trim()
+        currentWeather(city);
+    }
+}
+
+function loadPreviousCity () {
+    $("ul").empty();
+    var savedCity = JSON.parse(localStorage.getItem("cityname"))
+    if (savedCity!==null){
+        savedCity=JSON.parse(localStorage.getItem("cityname"))
+        for(i=0; i<savedCity.length;i++){
+            addToList(savedCity[i]);
+        }
+        city=savedCity[i-1];
+        currentWeather(city);
+    }
+}
+
+$("#searchButton").on('click', showWeather)
+$(document).on("click", invokePastSearch)
+$(window).on("load", loadlastCity);
 
 
         
