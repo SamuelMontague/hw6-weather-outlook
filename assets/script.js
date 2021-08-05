@@ -1,19 +1,83 @@
-var apiKey = "8c6c02d9b70f813c9a3adfe51cbbc402"
-var previousCities = [];
+const apiKey = "8c6c02d9b70f813c9a3adfe51cbbc402"
 
-function citySearch(e){
-    e.preventDefault();
-    city = $("#city").val()
-    if(city){
-        $("#currentCityCard").empty()
-        $("#fiveDayLineup").empty()
 
-        getCurrentWeather(city)
-        get5DayForecast(city)
+$(document).ready(function () {
+    console.log("we're working")
 
-        $("#city").val("")
+
+    var todayEl = moment()
+    $("#todayEl").text(todayEl.format('MMMM Do YYYY, h:mm:ss a'));
+    console.log(todayEl);
+
+    var locationArray = [];
+
+    $(".searchBtn").on("click", function (e) {
+        e.preventDefault();
+
+        var value = $(this).siblings(".storage").val();
+        console.log(value, "value");
+        localStorage.setItem(value, "value");
+
+        var recentsBtn = $('<button/>').attr({ type: 'button', name: 'recent', value: "value"})
+        recentsBtn.append(value);
+        $(".recents").append(value);
+    })
+
+    function citySearch(city){
+        var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey + "&units=imperial";
+        console.log(apiUrl)
+
+        $.ajax({
+            type: "GET",
+            url: apiUrl,
+            dataType: "json",
+            success: function (currentData) {
+                var cityName = $("<h3>").addClass("card-title").text(currentData.name);
+                var temperature = $("<p>").text("Temp: " + currentData.main.temp + " F\u00B0")
+                var windSpeed = $("<p>").text("Wind Speed: " + currentData.wind.speed + "mph")
+                var humidity = $("<p>").text("Humidity: " + currentData.main.humidity + "%")
+                var icon = $("<div>").addClass("card-body").prepend("<img src='http://openweathermap.org/img/w/" + data.weather[0].icon + ".png' alt='Icon depicting current weather.'>")
+                var cityDate = getCityDate(currentData.dt)
+
+                var card = $("<div>").addClass("card");
+                var cardBody = $("<div>").addClass("card-body");
+                cardBody.append(cityName, temperature, windSpeed, humidity, icon )
+                card.append(cardBody);
+                $("#today-weather").append(card);
+
+            }
+        })
+    }
+
+
+    function forecastSearch(searchValue) {
+        var apiUrl5DayForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=" + apiKey + "&units=imperial";
+
+        $.ajax({
+            type: "GET",
+            url: apiUrl5DayForecast,
+            dataType: "json",
+            success: function (data) {
+                let coordinates = { lat: data.city.coord.lat, long: data.city.coord.lon }
+                uvIndex(coordinates)
+
+                for(let i = 0; i < data.list.length; i+= 8) {
+                    let fiveDay = {
+                        icon: data.list[i].weather[0].icon,
+                        temp: data.list[i].main.temp,
+                        humidity: data.list[i].main.humidity,
+                        wind: data.list[i].main.wind
+                    }
+
+                    var titleEL = $("<h2>").addClass("card-title").text(data.name);
+                    var tempEl1 = $("<h5>").addClass("card-text").text("Temperature: " + data.list[i].main.temp + " °F");
+                }
+            }
+        })
     }
 }
+
+
 
 
 function redoSearch(city){
