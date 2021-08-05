@@ -28,7 +28,7 @@ function redoSearch(city){
 }
 
 function getCurrentWeather(city){
-    var apiUrlCurrent = "https://api.openweeathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + appKey
+    var apiUrlCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey
     fetch(apiUrlCurrent)
     .then(function (response){
         return response.json
@@ -105,34 +105,36 @@ function getIconImage(iconCode) {
 }
 
 function saveSearches(searchName) {
-    if (previousSearches.includes(searchName)) {
+    if (previousCities.includes(searchName)) {
         return;
-    } else if(previousSearches.length >= 8) {
-        previousSearches.shift();
-        previousSearches.push(searchName);
-        localStorage.setItem("previousSearches", JSON.stringify(previousSearches))
+    } else if(previousCities.length >= 8) {
+        previousCities.shift();
+        previousCities.push(searchName);
+        localStorage.setItem("previousCities", JSON.stringify(previousCities))
     } else {
-        previousSearches.push(searchName);
-        localStorage.setItem("previousSearches", JSON.stringify(previousSearches))
+        previousCities.push(searchName);
+        localStorage.setItem("previousCities", JSON.stringify(previousCities))
     }
 }
 
 function renderSearches() {
-    var previousSearchesList = $("#previousSearches")
-    previousSearchesList.empty();
-    var searches = JSON.parse(localStorage.getItem("previousSearches"))
+    var previousCitiesList = $("#previousCities")
+    previousCitiesList.empty();
+    var searches = JSON.parse(localStorage.getItem("previousCities"))
     for (var i = 0; i < searches.length; i++ ) {
         var btn = $("<button>").text(searches[i])
-        btn.addClass(" col-12 previousSearches")
-        previousSearchesList.append(btn);
+        btn.addClass(" col-12 previousCities")
+        previousCitiesList.append(btn);
     }
 }
 
-$("#previousSearches").on("click", function (e) {
+$("#previousCities").on("click", function (e) {
     console.log(e.target.innerHTML);
     var city = e.target.innerHTML
     redoSearch(city)
 })
+
+$("#search").on("click", citySearch)
 
 
 
