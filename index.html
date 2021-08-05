@@ -4,90 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./assets/style.css">
+    <title>Weather Dashboard</title>
 </head>
 <body>
-    <div class="jumbotron">
-        <h1 class="pt-1 container-fluid text-center mt-2 p-2" style="background-color: blue;color: white;">
-            <strong>Weather Dashboard</strong></h1>
-    </div>
-    <div class = "container">
-        <div class= "float-left row">
-             <h4><strong>Search for a City:</strong></h4>   
-
-                <div class= "col-2 mb-3" id='citySearch'>
-                    <input type="text" class="form-control" id="citySearchName" name="citySearchName" aria-label="City Search" aria-describedby="search-button">
-                    <div class="input-group-append">
-                    <br>
-                    <button class="btn bg-primary text-light" id="search-button" type="button">Search</button>
-                    </br>
-                    </div>
+    <div class="container-fluid"  >
+        <div class="col-12 d-flex justify-content-center"  >
+            <h1>Weather Dashboard</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-sm-12" id="searchResults">
+                <h2>Search for a City:</h2>
+                <form>
+                    <input type="text" id="city" placeholder="St. Paul">
+                    <button id="search">Search</button>
+                </form>
+                <div class="row" id="previousSearches"></div>
+            </div>
+            <div class="col-sm-12 col-md-9">
+                <div id="currentWeatherCard" class="col-12 d-flex flex-column justify-content-center">
                 </div>
-                <ul id="cityList" class="column">
-                </ul>   
-        
-            <div class="jumbotron jumbotron-fluid col-6">
-             <div class="container">
-                <h1 class="display-3">Fluid jumbotron</h1>
-                 <p class="lead"></p>
+                <div id="fiveDayCard" class="col-12">
+                    <div id="fiveDay" class="row d-flex justify-content-center"></div>
                 </div>
             </div>
         </div>
-
-        <div class ="row">
-                <div class="card col-2">
-                    <div class="card-body">
-                    <h4 class="card-title" id="Forecast">Day 1</h4>
-                    <h6 class="card-subtitle  mb-2 "id="temp">Temperature:</h6>
-                    <h6 class="card-subtitle mb-2 "id="hum">Humidity:</h6>
-                    <h6 class="card-subtitle mb-2 "id="windSpeed">windSpeed</h6>
-                    <h6 class="card-subtitle mb-2 "id="uvIndex">uvIndex</h6>
-                    </div>
-                </div>
-
-                <div class="card col-2">
-                    <div class="card-body">
-                    <h4 class="card-title" id="Forecast">Day 2</h4>
-                    <h6 class="card-subtitle  mb-2 "id="temp">Temperature:</h6>
-                    <h6 class="card-subtitle mb-2 "id="hum">Humidity:</h6>
-                    <h6 class="card-subtitle mb-2 "id="windSpeed">windSpeed</h6>
-                    <h6 class="card-subtitle mb-2 "id="uvIndex">uvIndex</h6>
-                    </div>
-                </div>
-                <div class="card col-2">
-                    <div class="card-body">
-                    <h4 class="card-title" id="Forecast">Day 3</h4>
-                    <h6 class="card-subtitle  mb-2 "id="temp">Temperature:</h6>
-                    <h6 class="card-subtitle mb-2 "id="hum">Humidity:</h6>
-                    <h6 class="card-subtitle mb-2 "id="windSpeed">windSpeed</h6>
-                    <h6 class="card-subtitle mb-2 "id="uvIndex">uvIndex</h6>
-                    </div>
-                </div>
-                <div class="card col-2">
-                    <div class="card-body">
-                    <h4 class="card-title" id="Forecast">Day 4</h4>
-                    <h6 class="card-subtitle  mb-2 "id="temp">Temperature:</h6>
-                    <h6 class="card-subtitle mb-2 "id="hum">Humidity:</h6>
-                    <h6 class="card-subtitle mb-2 "id="windSpeed">windSpeed</h6>
-                    <h6 class="card-subtitle mb-2 "id="uvIndex">uvIndex</h6>
-                    </div>
-                </div>
-                <div class="card col-2">
-                    <div class="card-body">
-                    <h4 class="card-title" id="Forecast">Day 5</h4>
-                    <h6 class="card-subtitle  mb-2 "id="temp">Temperature:</h6>
-                    <h6 class="card-subtitle mb-2 "id="hum">Humidity:</h6>
-                    <h6 class="card-subtitle mb-2 "id="windSpeed">windSpeed</h6>
-                    <h6 class="card-subtitle mb-2 "id="uvIndex">uvIndex</h6>
-                    </div>
-                </div>
-               
-        
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>   
-    <script src="script.js"></script>  
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="./assets/script.js"></script>
 </body>
 </html>

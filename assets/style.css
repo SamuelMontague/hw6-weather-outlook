@@ -1,0 +1,53 @@
+:root {
+    --white: #f6f7eb;
+    --orange: #e94f37d5;
+    --black: #393e41;
+    --lightblack: #393e41b4;
+    --blue: #3f89c5e7;
+    --green: #44bba3da;
+
+}
+body {
+    background-color: var(--white);
+    color: var(--black);
+}
+h1 {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: var(--orange);
+}
+#searchResults {
+    border-radius: 5px;
+    background-color: var(--blue);
+}
+#currentWeatherCard{
+    border-radius: 5px;
+    background-color: var(--green);
+    margin: 5px;
+    
+}
+#fiveDayCard{
+    margin: 5px;
+    border-radius: 5px;
+    background-color: var(--lightblack);
+    color: var(--white);
+    
+}
+
+
+.test2 {
+    border-radius: 5px;
+
+    border : 3px solid var(--orange);
+}
+
+
+#previousSearches {
+    margin: 10px;
+}
+.previousSearches {
+    margin: 5px 0px;
+}
+.fiveDayCard {
+    margin: 5px;
+}
