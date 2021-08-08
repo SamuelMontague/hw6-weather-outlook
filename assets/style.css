@@ -16,21 +16,24 @@ h1 {
     padding: 10px;
     background-color: var(--deep_purple);
 }
-div.card{
-    display: inline-block;
-    background-color: --purple;
-    color: --white;
-    width: 20%
+#searchResults {
+    border-radius: 5px;
+    background-color: var(--blue);
 }
 #currentWeatherCard{
-    text-align: center;
+    border-radius: 5px;
+    background-color: var(--purple);
+    margin: 5px;
     
 }
-.five-day{
-    display: grid;
-    text-align: center;
+#fiveDayCard{
+    margin: 5px;
+    border-radius: 5px;
+    background-color: var(--lightblack);
+    color: var(--white);
     
 }
+
 
 #previousSearches {
     margin: 10px;
