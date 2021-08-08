@@ -1,140 +1,108 @@
-var apiKey = "8c6c02d9b70f813c9a3adfe51cbbc402"
-var previousCities = [];
-
-function citySearch(e){
-    e.preventDefault();
-    city = $("#city").val()
-    if(city){
-        $("#currentCityCard").empty()
-        $("#fiveDayLineup").empty()
-
-        getCurrentWeather(city)
-        get5DayForecast(city)
-
-        $("#city").val("")
-    }
-}
+$(document).ready(function () {
+    
+    var todayEl = moment()
+    $("#todayEl").text(todayEl.format('MMMM Do YYYY, h:mm:ss a'));
 
 
-function redoSearch(city){
-    $("#currentCityCard").empty()
-    $("#fiveDayLineup").empty()
+    $(".searchBtn").on("click", function (e) {
+        e.preventDefault();
 
-    getCurrentWeather(city)
-    get5DayForecast(city)
+        var value = $(this).siblings(".saved").val();
+        localStorage.setItem(value, "value");
 
-    $("#city").val("")
-
-}
-
-function getCurrentWeather(city){
-    var apiUrlCurrent = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=" + apiKey
-    fetch(apiUrlCurrent)
-    .then(function (response){
-        return response.json
+        var recentsBtn = $('<button/>').attr({ type: 'button', name: 'recents', value: "value"})
+        recentsBtn.append(value);
+        $(".recents").append(value);
     })
-    .then(function (data) {
-        renderCurrentWeather(data)
-    })
-}  
 
-function renderCurrentWeather(currentData){
-    var cityName = $("<h3>")
-    var temperature = $("<p>").text("Temp: " + currentData.main.temp + " F\u00B0")
-    var windSpeed = $("<p>").text("Wind Speed: " + currentData.wind.speed + "mph")
-    var humidity = $("<p>").text("Humidity: " + currentData.main.humidity + "%")
-    var currentWeather = $("#currentWeatherCard")
-    var image = getIconImage(currentData.weather[0].icon)
-    var cityDate = getCityDate(currentData.dt)
-    cityName[0].innerHTML = "Current Conditions: " + currentData.name + cityDate
-    cityName.append(image)
-    currentWeather.append(cityName)
-    currentWeather.append(temperature)
-    currentWeather.append(windSpeed)
-    currentWeather.append(humidity)
-    saveSearches(currentData.name)
-    renderSearches()
-}
 
-function get5DayForecast(city) {
-    var apiUrl5DayForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=" + apiKey
-    fetch(apiUrl5DayForecast)
-    .then(function (response) {
-        return response.json()
-    })
-    .then(function (data) {
-        render5DayForecast(data)
-    })
-}
+    var apiKey = "8c6c02d9b70f813c9a3adfe51cbbc402"
 
-function render5DayForecast(currentForecast){
-    var fiveDayCard = $("#fiveDayCard");
-    var fiveDayTitle = $("<h3>").text("5-Day Forecast");
-    fiveDayCard.append(fiveDayTitle);
-    var container = $("<div>").addClass("row");
-    fiveDayCard.append(container)
 
-    for (var i=0; i < currentForecast.list.length; i+= 8){
-        var day = $("<div>").addClass( "col-sm-12 col-md-4 col-lg-2 test2 d-flex flex-column justify-content-center fiveDayCard" );
-        var date = $("<h4>").text(getCityDate(currentForecast.list[i].dt));
-        var image = getIconImage(currentForecast.list[i].weather[0].icon)
-        var temp = $("<p>").text("Temp: " + currentForecast.list[i].main.temp + " F\u00B0");
-        var wind = $("<p>").text("Wind: " + currentForecast.list[i].wind.speed + "mph")
-        var humidity = $("<p>").text("Humidity: " + currentForecast.list[i].main.humidity + "%")
-        day.append(date);
-        day.append(image);
-        day.append(temp);
-        day.append(wind);
-        day.append(humidity);
-        container.append(day);
+    function citySearch(city){
+        var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
+        console.log(apiUrl)
+
+        $.ajax({
+            type: "GET",
+            url: apiUrl,
+            dataType: "json",
+            success: function (data) {
+                var cityName = $("<h2>").addClass("card-title").text(data.name);
+                var temperature = $("<h5>").text("Temp: " + data.main.temp + " °F")
+                var windSpeed = $("<h5>").text("Wind Speed: " + data.wind.speed + "mph")
+                var humidity = $("<h5>").text("Humidity: " + data.main.humidity + "%")
+                var icon = $("<div>").addClass("card-body").prepend("<img src='http://openweathermap.org/img/w/" + data.weather[0].icon + ".png' alt='Icon for current weather.'>")
+        
+
+                var card = $("<div>").addClass("card");
+                var cardBody = $("<div>").addClass("card-body");
+                cardBody.append(cityName, temperature, windSpeed, humidity, icon )
+                card.append(cardBody);
+                $("#today-weather").append(card);
+
+            }
+        })
     }
-}
 
 
-function getCityDate(unix) {
-    var a = new Date(unix * 1000);
-    var cityDate = " (" + (a.getMonth() + 1) + "-" + a.getDate() + "-" + a.getFullYear() + ") ";
-    return cityDate;
-}
+    function forecastSearch(city) {
+        var apiUrl5DayForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey + "&units=imperial";
 
-function getIconImage(iconCode) {
-    var iconUrl = "https://openweathermap.org/img/w/" + iconCode + ".png";
-    var image = $("<img>")
-    image.attr({src: iconUrl, width: 50, height: 50});
-    return image;
-}
+        $.ajax({
+            type: "GET",
+            url: apiUrl5DayForecast,
+            dataType: "json",
+            success: function (data) {
+                let coordinates = { lat: data.city.coord.lat, long: data.city.coord.lon }
+                uvIndex(coordinates)
 
-function saveSearches(searchName) {
-    if (previousCities.includes(searchName)) {
-        return;
-    } else if(previousCities.length >= 8) {
-        previousCities.shift();
-        previousCities.push(searchName);
-        localStorage.setItem("previousCities", JSON.stringify(previousCities))
-    } else {
-        previousCities.push(searchName);
-        localStorage.setItem("previousCities", JSON.stringify(previousCities))
+                for(let i = 0; i < data.list.length; i+= 9) {
+                    let fiveDayForecast = {
+                        icon: data.list[i].weather[0].icon,
+                        temp: data.list[i].main.temp,
+                        humidity: data.list[i].main.humidity,
+                        wind: data.list[i].main.wind
+                    }
+
+                    var titleElement = $("<h2>").addClass("card-title").text(data.name);
+                    var tempElement = $("<h5>").addClass("card-text").text("Temperature: " + data.list[i].main.temp + " °F");
+                    var humidityElement = $("<h5>").addClass("card-text").text("Humidity: " + data.list[i].main.humidity + " %");
+                    var windElement = $("<h5>").addClass("card-text").text("Wind speed: " + data.list[i].wind.speed + " MPH");
+                    var currentIcon = $("<div>").addClass("card-body").prepend("<img src='http://openweathermap.org/img/w/" + data.list[i].weather[0].icon + ".png' alt='Icon depicting current weather.'>");
+                    var card1 = $("<div>").addClass("card");
+                    var cardBody1 = $("<div>").addClass("card-body");
+                    cardBody1.append(titleElement, tempElement, humidityElement, windElement, currentIcon);
+                    card1.append(cardBody1)
+                    $(".five-day").append(card1);
+
+                }
+            }
+        })
     }
-}
 
-function renderSearches() {
-    var previousCitiesList = $("#previousCities")
-    previousCitiesList.empty();
-    var searches = JSON.parse(localStorage.getItem("previousCities"))
-    for (var i = 0; i < searches.length; i++ ) {
-        var btn = $("<button>").text(searches[i])
-        btn.addClass(" col-12 previousCities")
-        previousCitiesList.append(btn);
+
+    function uvIndex(coordinates) {
+        var IndexUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + coordinates.lat + "&lon=" + coordinates.long + "&appid=" + apiKey;
+
+        $.ajax({
+            type: "GET",
+            url: IndexUrl,
+            dataTypes: "json",
+            
+        })
     }
-}
 
-$("#previousCities").on("click", function (e) {
-    console.log(e.target.innerHTML);
-    var city = e.target.innerHTML
-    redoSearch(city)
-})
+    $(".searchBtn").on("click", function (e) {
+        e.preventDefault();
+        var searchValue = $('#search-city').val()
 
-$("#search").on("click", citySearch)
+        citySearch(searchValue)
+
+        forecastSearch(searchValue)
+    })
+}) 
+
 
 
 
