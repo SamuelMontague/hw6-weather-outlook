@@ -52,7 +52,7 @@ $('#city').text(temp.name)
   $('#feels-like').text(`Feels Like: ${Math.round(temp.main.feels_like)}°`)
 }
 
-function citySearch() {
+function getWeatherSearch() {
     $('#history').empty();
 
     for(let i = 0; i < storeWeather.length; i++) {
@@ -79,8 +79,37 @@ function getWeatherForecast(index) {
     for(let i = 0; i < dayIndex.length; i++) {
         var tempWeather = temp.list[dayIndex[i]]
 
-    
+        $('.hidden').removeClass('hidden');
+        $('#forecast').append(`
+        <div class="card">
+        <div class="card-header">
+        <h5 class="card-title">${moment(tempWeather.dt_txt).format('dddd, MMM Do')}</h5>
+        </div>\n
+        <div class="card-body"><img src="https://openweathermap.org/img/wn/${tempWeather.weather[0].icon}@2x.png" />
+        <p class="card-text">Temp: ${Math.round(tempWeather.main.temp)}°</p>\n
+        <p>Wind: ${Math.round(tempWeather.wind.speed)} MPH</p>\n
+        <p>Humidity: ${tempWeather.main.humidity}%</p>\n
+        <p>Feels Like: ${Math.round(tempWeather.main.feels_like)}°</p></div></div>`)
+      }
 }
+
+function updateStoredWeather(location, currentWeather, forecast){
+    var tempObj ={
+        location: "",
+        currentWeather: {},
+        forecast: {},
+    }
+    tempObj.location = location;
+    tempObj.currentWeather = currentWeather;
+    tempObj.forecast = forecast;
+    storeWeather.push(tempObj);
+    localStorage.setItem('weather', JSON.stringify(storeWeather));
+}
+
+$('#clear').on('click', function(){
+    localStorage.clear();
+    location.reload();
+})
 
 
 

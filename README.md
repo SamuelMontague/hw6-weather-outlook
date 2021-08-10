@@ -8,6 +8,8 @@ https://samuelmontague.github.io/hw6-weather-outlook/
 #Description
 
 This website is built for the use of practicing API calls and earning a better understanding of API and javascript. This app can tell you the weather today and the upcoming weather forecast for a searched city up to 5 days.
+
+![screenshot](./assets/screenshot.png)
     
 # Table of Contents
 
