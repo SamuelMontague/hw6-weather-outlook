@@ -52,6 +52,36 @@ $('#city').text(temp.name)
   $('#feels-like').text(`Feels Like: ${Math.round(temp.main.feels_like)}°`)
 }
 
+function citySearch() {
+    $('#history').empty();
+
+    for(let i = 0; i < storeWeather.length; i++) {
+        var location = storeWeather[i].location;
+        var btn = $('<button>').text(location);
+
+        btn.attr({
+            class: "weatherSearch btn btn-outline-secondary",
+            value: i
+        })
+
+        $('#history').append(btn);
+    }
+
+}
+
+function getWeatherForecast(index) {
+    $('#forecast').empty();
+
+    var temp = storeWeather[index].forecast;
+    var count = 8;
+    var dayIndex = [0, count, 2*count, 3*count, 4*count]
+
+    for(let i = 0; i < dayIndex.length; i++) {
+        var tempWeather = temp.list[dayIndex[i]]
+
+    
+}
+
 
 
 // $(document).ready(function () {
