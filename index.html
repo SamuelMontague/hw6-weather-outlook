@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,31 +23,46 @@
   <link rel="stylesheet" href="./assets/css/style.css" />
   <title>Weather Dashboard</title>
 </head>
-<body>
-    <div class="container-fluid"  >
-        <div class="col-12 d-flex justify-content-center"  >
-            <h1>Weather Dashboard</h1>
-        </div>
-        <div class="row">
-            <div class="col-md-3 col-sm-12" id="searchResults">
-                <h2>Search for a City:</h2>
-                <form>
-                    <input type="text" id="city" placeholder="Los Angeles">
-                    <button id="search">Search</button>
-                </form>
-                <div class="row" id="previousSearches"></div>
-            </div>
-            <div class="col-sm-12 col-md-9">
-                <div id="currentWeatherCard" class="col-12 d-flex flex-column justify-content-center">
-                </div>
-                <div id="fiveDayCard" class="col-12">
-                    <div id="fiveDay" class="row d-flex justify-content-center"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="./assets/script.js"></script>
-</body>
-</html>
+<body>
+    <header>
+      <h1>WEATHER DASHBOARD<i class="fas fa-leaf"></i></h1>
+    </header>
+    <div class="container-fluid">
+      <div class="row">
+        <div id="search" class="col-3">
+          <h2>Search for a City</h2>
+          <div class="form-group">
+            <label for="search"></label>
+            <input
+              type="text"
+              class="form-control"
+              id="search-field"
+              placeholder="name of city"
+            />
+            <button type="submit" id="search-button" class="btn btn-primary btn-lg">Search</button>
+            <button id="clear" class="btn btn-secondary">Clear History</button>
+          </div>
+        </div>
+        <div id="weather" class="col-9">
+          <div id="city"></div><img id="icon"></img>
+          <div id="temperature"></div>
+          <div id="humidity"></div>
+          <div id="wind-speed"></div>
+          <div id="feels-like"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div id="history" class="col-2 w-100"></div>
+        <div id="forecast" class="col-10 d-flex w-100"><h3 class="hidden">5-Day Forecast:</h3></div>
+      </div>
+    </div>
+  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="./assets/js/script.js"></script>
+  
+  </body>
+  </html>
