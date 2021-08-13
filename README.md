@@ -1,6 +1,6 @@
 # hw6-weather-outlook
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/SamuelMontague/README.md Generator)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/SamuelMontague/hw6-weather-outlook)
 
 Link to my deployed Repo 
 https://samuelmontague.github.io/hw6-weather-outlook/
