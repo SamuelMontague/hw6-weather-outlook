@@ -5,7 +5,7 @@
 Link to my deployed Repo 
 https://samuelmontague.github.io/hw6-weather-outlook/
   
-#Description
+# Description
 
 This website is built for the use of practicing API calls and earning a better understanding of API and javascript. This app can tell you the weather today and the upcoming weather forecast for a searched city up to 5 days.
 
@@ -32,7 +32,7 @@ The following necessary dependcies must be installed to run the application prop
 
 This application is used for seeing today's and the next five days weather for a searched city
 
-#License
+# License
 
 This application is covered by the MIT license.
     
