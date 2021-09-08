@@ -1,4 +1,4 @@
-# hw6-weather-outlook
+# weatherOutlook
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/SamuelMontague/hw6-weather-outlook)
 
